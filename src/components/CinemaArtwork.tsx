@@ -8,6 +8,7 @@ interface CinemaArtworkProps {
   enforceAspectRatio?: boolean;
   interactiveHover?: boolean;
   preferSchematic?: boolean;
+  lightweight3D?: boolean;
 }
 
 export const CinemaArtwork: React.FC<CinemaArtworkProps> = ({
@@ -17,6 +18,7 @@ export const CinemaArtwork: React.FC<CinemaArtworkProps> = ({
   enforceAspectRatio = true,
   interactiveHover = false,
   preferSchematic = false,
+  lightweight3D = false,
 }) => {
   const [imgError, setImgError] = useState(false);
   const [c1, c2, c3] = milestone.colorPalette;
@@ -912,22 +914,34 @@ export const CinemaArtwork: React.FC<CinemaArtworkProps> = ({
       } ${className}`}
     >
       {showRealPoster ? (
-        <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-[#07080B]">
-          {/* Ambient Blurred Theatrical Poster Backdrop */}
-          <img
-            src={milestone.posterUrl}
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover scale-125 blur-xl opacity-45 pointer-events-none"
-          />
+        <div
+          className="relative w-full h-full flex items-center justify-center overflow-hidden bg-[#07080B]"
+          style={
+            lightweight3D
+              ? {
+                  background: `radial-gradient(circle at 50% 45%, ${c1}30 0%, #07080B 80%)`,
+                }
+              : undefined
+          }
+        >
+          {/* Ambient Blurred Theatrical Poster Backdrop (skipped in 3D tunnel for 60fps GPU speed) */}
+          {!lightweight3D && (
+            <img
+              src={milestone.posterUrl}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover scale-125 blur-xl opacity-45 pointer-events-none"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-[#08090C]/85 via-transparent to-[#08090C]/35 pointer-events-none" />
           {/* Foreground Sharp Theatrical Poster / Archival Frame */}
           <img
             src={milestone.posterUrl}
             alt={`${milestone.title} (${milestone.year})`}
             onError={() => setImgError(true)}
-            loading="lazy"
-            className={`relative z-10 max-h-full max-w-full object-contain shadow-[0_8px_30px_rgba(0,0,0,0.85)] transition-transform duration-700 ease-out ${
+            loading={lightweight3D ? 'eager' : 'lazy'}
+            decoding="async"
+            className={`relative z-10 max-h-full max-w-full object-contain shadow-[0_8px_30px_rgba(0,0,0,0.85)] transition-transform duration-500 ease-out ${
               interactiveHover ? 'group-hover:scale-105' : ''
             }`}
           />
@@ -1016,7 +1030,7 @@ export const CinemaArtwork: React.FC<CinemaArtworkProps> = ({
       )}
 
       {/* Top-Right Aspect Ratio Badge */}
-      <div className="absolute top-2 right-2 z-20 px-1.5 py-0.5 rounded bg-[#0A0A0C]/85 backdrop-blur-md border border-[#F4F0EA]/15 text-[10px] font-mono-tech text-[#F4F0EA]/85 tracking-wider">
+      <div className="absolute top-2 right-2 z-20 px-1.5 py-0.5 rounded bg-[#0A0A0C]/90 border border-[#F4F0EA]/15 text-[10px] font-mono-tech text-[#F4F0EA]/85 tracking-wider">
         {milestone.aspectRatio}
       </div>
     </div>

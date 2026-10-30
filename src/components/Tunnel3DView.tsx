@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { CinemaMilestone, Era } from '../data/types';
 import { getEraById } from '../data/cinemaData';
 import { CinemaArtwork } from './CinemaArtwork';
@@ -17,17 +17,49 @@ export const Tunnel3DView: React.FC<Tunnel3DViewProps> = ({
   onSelectIndex,
   onOpenDossier,
 }) => {
-  const [mouseTilt, setMouseTilt] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const targetTiltRef = useRef({ x: 0, y: 0 });
+  const currentTiltRef = useRef({ x: 0, y: 0 });
+  const wheelAccumRef = useRef(0);
+  const lastStepTimeRef = useRef(0);
+
   const activeMilestone = milestones[activeIndex] || milestones[0];
   const activeEra: Era = getEraById(activeMilestone.eraId);
 
+  // 60fps GPU-direct mouse parallax loop (zero React re-renders on mousemove)
   useEffect(() => {
+    let rafId: number;
+    const animateTilt = () => {
+      const curr = currentTiltRef.current;
+      const target = targetTiltRef.current;
+      curr.x += (target.x - curr.x) * 0.12;
+      curr.y += (target.y - curr.y) * 0.12;
+      if (stageRef.current) {
+        stageRef.current.style.transform = `rotateY(${curr.x.toFixed(2)}deg) rotateX(${curr.y.toFixed(2)}deg)`;
+      }
+      rafId = requestAnimationFrame(animateTilt);
+    };
+    rafId = requestAnimationFrame(animateTilt);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  // Smooth debounced wheel & trackpad flight navigation
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
     const handleWheel = (e: WheelEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest('#cinema-3d-tunnel')) return;
       e.preventDefault();
-      if (Math.abs(e.deltaY) > 12) {
-        const dir = e.deltaY > 0 ? 1 : -1;
+      const now = performance.now();
+      if (now - lastStepTimeRef.current < 130) {
+        return;
+      }
+      wheelAccumRef.current += e.deltaY;
+      if (Math.abs(wheelAccumRef.current) >= 28) {
+        const dir = wheelAccumRef.current > 0 ? 1 : -1;
+        wheelAccumRef.current = 0;
+        lastStepTimeRef.current = now;
         const next = Math.min(milestones.length - 1, Math.max(0, activeIndex + dir));
         if (next !== activeIndex) {
           onSelectIndex(next);
@@ -35,57 +67,77 @@ export const Tunnel3DView: React.FC<Tunnel3DViewProps> = ({
       }
     };
 
-    const el = document.getElementById('cinema-3d-tunnel');
-    if (el) {
-      el.addEventListener('wheel', handleWheel, { passive: false });
-    }
-    return () => {
-      if (el) el.removeEventListener('wheel', handleWheel);
-    };
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
   }, [activeIndex, milestones.length, onSelectIndex]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
     const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-    setMouseTilt({ x: nx * 6, y: -ny * 4 });
+    targetTiltRef.current = { x: nx * 4.5, y: -ny * 3 };
+  };
+
+  const handleMouseLeave = () => {
+    targetTiltRef.current = { x: 0, y: 0 };
   };
 
   return (
     <div
       id="cinema-3d-tunnel"
+      ref={containerRef}
       onMouseMove={handleMouseMove}
-      onMouseLeave={() => setMouseTilt({ x: 0, y: 0 })}
-      className="relative w-full h-[calc(100vh-280px)] min-h-[520px] max-h-[820px] overflow-hidden rounded-lg border border-[#F4F0EA]/10 bg-[#07080B]/85 perspective-stage select-none"
+      onMouseLeave={handleMouseLeave}
+      style={{
+        background: `radial-gradient(circle at 50% 50%, ${activeEra.accentColor}22 0%, #07080B 68%)`,
+      }}
+      className="relative w-full h-[calc(100vh-280px)] min-h-[520px] max-h-[820px] overflow-hidden rounded-lg border border-[#F4F0EA]/12 perspective-stage select-none"
     >
-      <div
-        className="w-full h-full preserve-3d transition-transform duration-300 ease-out"
-        style={{
-          transform: `rotateY(${mouseTilt.x}deg) rotateX(${mouseTilt.y}deg)`,
-        }}
+      {/* Perspective Guide Rails (Pure SVG, zero filter cost) */}
+      <svg
+        viewBox="0 0 1000 600"
+        preserveAspectRatio="none"
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-20"
       >
-        <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full blur-[130px] pointer-events-none transition-colors duration-700"
-          style={{
-            background: `radial-gradient(circle, ${activeEra.accentColor}33 0%, transparent 70%)`,
-          }}
-        />
+        <line x1="0" y1="0" x2="500" y2="300" stroke={activeEra.accentColor} strokeWidth="0.7" />
+        <line x1="1000" y1="0" x2="500" y2="300" stroke={activeEra.accentColor} strokeWidth="0.7" />
+        <line x1="0" y1="600" x2="500" y2="300" stroke={activeEra.accentColor} strokeWidth="0.7" />
+        <line x1="1000" y1="600" x2="500" y2="300" stroke={activeEra.accentColor} strokeWidth="0.7" />
+        <rect x="360" y="190" width="280" height="220" fill="none" stroke={activeEra.accentColor} strokeWidth="0.5" strokeDasharray="4 4" />
+      </svg>
 
+      {/* Hardware-Accelerated 3D Stage */}
+      <div
+        ref={stageRef}
+        className="w-full h-full preserve-3d"
+        style={{ willChange: 'transform' }}
+      >
         {milestones.map((m, idx) => {
           const offset = idx - activeIndex;
-          if (offset < -2 || offset > 8) return null;
+          // Render tight depth window for 60fps performance
+          if (offset < -1 || offset > 6) return null;
 
-          const zPos = -offset * 340;
+          const zPos = offset < 0 ? 220 : -offset * 290;
           const lane = idx % 3 === 0 ? -1 : idx % 3 === 1 ? 1 : 0;
-          const xPos = offset === 0 ? 0 : lane * 260 + (offset % 2 === 0 ? -50 : 50);
-          const yPos = offset === 0 ? -12 : idx % 2 === 0 ? -35 : 35;
-          const scale = offset === 0 ? 1 : Math.max(0.35, 1 - Math.abs(offset) * 0.08);
+          const xPos =
+            offset === 0
+              ? 0
+              : offset < 0
+              ? lane * 340
+              : lane * 270 + (offset % 2 === 0 ? -40 : 40);
+          const yPos = offset === 0 ? -10 : idx % 2 === 0 ? -28 : 28;
+          const scale =
+            offset === 0
+              ? 1
+              : offset < 0
+              ? 1.08
+              : Math.max(0.42, 1 - offset * 0.085);
           const opacity =
             offset < 0
-              ? Math.max(0, 0.25 + offset * 0.15)
+              ? 0
               : offset === 0
               ? 1
-              : Math.max(0.12, 1 - offset * 0.12);
+              : Math.max(0.15, 1 - offset * 0.14);
 
           const mEra = getEraById(m.eraId);
 
@@ -100,14 +152,17 @@ export const Tunnel3DView: React.FC<Tunnel3DViewProps> = ({
                 }
               }}
               style={{
-                transform: `translate3d(calc(-50% + ${xPos}px), calc(-50% + ${yPos}px), ${zPos}px) scale(${scale})`,
+                transform: `translate3d(${xPos}px, ${yPos}px, ${zPos}px) scale3d(${scale}, ${scale}, 1)`,
                 opacity,
                 zIndex: 100 - Math.abs(offset),
+                willChange: 'transform, opacity',
+                backfaceVisibility: 'hidden',
+                pointerEvents: offset < 0 ? 'none' : 'auto',
               }}
-              className={`absolute left-1/2 top-1/2 w-[310px] sm:w-[370px] transition-all duration-700 ease-out cursor-pointer rounded-md p-4 border ${
+              className={`absolute left-1/2 top-1/2 -ml-[155px] sm:-ml-[185px] -mt-[195px] w-[310px] sm:w-[370px] transition-[transform,opacity,border-color] duration-500 ease-out cursor-pointer rounded-md p-4 border ${
                 offset === 0
-                  ? 'bg-[#161821]/95 border-[#D4AF37]/70 shadow-[0_25px_70px_rgba(0,0,0,0.92)] ring-1 ring-[#D4AF37]/30'
-                  : 'bg-[#121318]/85 border-[#F4F0EA]/12 hover:border-[#D4AF37]/40'
+                  ? 'bg-[#161821] border-[#D4AF37] shadow-[0_20px_50px_rgba(0,0,0,0.9)]'
+                  : 'bg-[#121318] border-[#F4F0EA]/15 hover:border-[#D4AF37]/50'
               }`}
             >
               <div className="flex items-center justify-between mb-2.5">
@@ -126,7 +181,9 @@ export const Tunnel3DView: React.FC<Tunnel3DViewProps> = ({
                     <Flame className="w-2.5 h-2.5" /> Cult
                   </span>
                 ) : (
-                  <span className="text-[11px] font-mono-tech text-[#A39E93]">{m.country}</span>
+                  <span className="text-[11px] font-mono-tech text-[#A39E93] truncate max-w-[150px]">
+                    {m.country}
+                  </span>
                 )}
               </div>
 
@@ -135,12 +192,13 @@ export const Tunnel3DView: React.FC<Tunnel3DViewProps> = ({
                   milestone={m}
                   enforceAspectRatio={false}
                   interactiveHover={offset === 0}
+                  lightweight3D={true}
                   className="w-full h-full"
                 />
               </div>
 
               <div className="mt-3">
-                <h3 className="font-display text-2xl font-bold text-[#F4F0EA] leading-tight">
+                <h3 className="font-display text-2xl font-bold text-[#F4F0EA] leading-tight truncate">
                   {m.title}
                 </h3>
                 <div className="flex items-center justify-between mt-1 text-xs text-[#A39E93]">
@@ -159,18 +217,18 @@ export const Tunnel3DView: React.FC<Tunnel3DViewProps> = ({
 
       {/* Top HUD */}
       <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-2 pointer-events-none">
-        <div className="px-3 py-1 rounded bg-[#0A0A0C]/85 border border-[#F4F0EA]/15 backdrop-blur-md flex items-center gap-2 text-xs font-mono-tech text-[#A39E93]">
+        <div className="px-3 py-1 rounded bg-[#0A0A0C]/90 border border-[#F4F0EA]/15 flex items-center gap-2 text-xs font-mono-tech text-[#A39E93]">
           <Compass className="w-3.5 h-3.5 text-[#D4AF37]" />
-          <span>3D Z-TUNNEL · SCROLL OR CLICK DEPTH FRAMES</span>
+          <span>3D Z-TUNNEL · SCROLL WHEEL, ARROWS, OR CLICK DEPTH FRAMES</span>
         </div>
 
-        <div className="px-3 py-1 rounded bg-[#0A0A0C]/85 border border-[#F4F0EA]/15 backdrop-blur-md text-xs font-mono-tech text-[#D4AF37]">
+        <div className="px-3 py-1 rounded bg-[#0A0A0C]/90 border border-[#F4F0EA]/15 text-xs font-mono-tech text-[#D4AF37]">
           {activeIndex + 1} / {milestones.length} · {activeMilestone.year}
         </div>
       </div>
 
       {/* Bottom 3D Flight Controls */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 px-4 py-1.5 rounded-full bg-[#0E0F14]/90 border border-[#F4F0EA]/15 backdrop-blur-md shadow-xl">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 px-4 py-1.5 rounded-full bg-[#0E0F14]/95 border border-[#F4F0EA]/15 shadow-xl">
         <button
           onClick={() => onSelectIndex(Math.max(0, activeIndex - 1))}
           disabled={activeIndex === 0}

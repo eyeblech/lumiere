@@ -46,50 +46,6 @@ export const MILESTONES_ADDITIONAL: CinemaMilestone[] = [
     artSceneKey: 'nosferatu',
   },
   {
-    id: 'passion-of-joan-of-arc-1928',
-    year: 1928,
-    smpteCode: '00:19:28:04',
-    frameCode: '08B',
-    eraId: 'expressionism-montage-sound',
-    category: 'masterpiece',
-    title: 'The Passion of Joan of Arc',
-    originalTitle: 'La Passion de Jeanne d’Arc',
-    director: 'Carl Theodor Dreyer',
-    cinematographer: 'Rudolph Maté',
-    starring: ['Renée Jeanne Falconetti (Joan of Arc)', 'Eugène Silvain', 'Antonin Artaud'],
-    country: 'France',
-    runtime: '82 min',
-    aspectRatio: '1.33:1',
-    filmStock: '35mm Eastman Panchromatic Nitrate (Zero Makeup)',
-    primaryTag: 'Architecture of the Human Face & Extreme Close-Up',
-    posterUrl: '/posters/passion-of-joan-of-arc-1928.jpg',
-    logline:
-      'Constructed almost entirely of extreme, unvarnished close-ups drawn directly from the 1431 trial transcripts, Renée Falconetti delivers perhaps the greatest performance ever captured on film.',
-    historicalEssay: [
-      'Danish master Carl Theodor Dreyer spent over a year researching the verbatim transcript of Joan of Arc’s 1431 heresy trial in Rouen, condensing 29 interrogations into a single agonizing day. Rejecting theatrical wigs and greasepaint, Dreyer used newly developed panchromatic film stock to record every pore, tear, and wrinkle on the bare faces of his actors.',
-      'After the original negative burned in a Berlin warehouse fire in 1928, the true master print was believed lost for over half a century until 1981, when a janitor opened a closet in Dikemark psychiatric hospital outside Oslo and found an untouched, pristine original print in its 1928 shipping canisters.',
-    ],
-    technicalBreakthrough: {
-      headline: 'Unmade-Up Panchromatic Close-Ups & Spatial Disorientation',
-      detail:
-        'Abandoned establishing shots in favor of relentless, canted close-ups against stark white walls so the viewer experiences the trial entirely through facial micro-expressions.',
-    },
-    iconicScene: {
-      title: 'The Shaving of Joan’s Hair Before the Stake',
-      description:
-        'As guards shear Renée Falconetti’s real hair on camera prior to her execution, tears stream down her cheeks in unbroken, devastating intimacy.',
-    },
-    famousQuote: {
-      text: 'Nothing in the world can be compared to the human face. It is a land one can never tire of exploring.',
-      attribution: 'Carl Theodor Dreyer',
-    },
-    accolades: '#1 Greatest Performance of All Time (Premiere Magazine); Sight & Sound Top 10 All-Time Canon',
-    influencedBy: ['potemkin-1925'],
-    pavedWayFor: ['persona-1966', 'seven-samurai-1954'],
-    colorPalette: ['#F3F4F6', '#9CA3AF', '#111827'],
-    artSceneKey: 'joan-of-arc',
-  },
-  {
     id: 'm-1931',
     year: 1931,
     smpteCode: '00:19:31:02',
@@ -177,49 +133,6 @@ export const MILESTONES_ADDITIONAL: CinemaMilestone[] = [
     artSceneKey: 'sunset-boulevard',
   },
   {
-    id: 'vertigo-1958',
-    year: 1958,
-    smpteCode: '00:19:58:05',
-    frameCode: '15B',
-    eraId: 'postwar-new-waves',
-    category: 'masterpiece',
-    title: 'Vertigo',
-    director: 'Alfred Hitchcock',
-    cinematographer: 'Robert Burks, ASC',
-    starring: ['James Stewart (Scottie Ferguson)', 'Kim Novak (Madeleine Elster / Judy Barton)', 'Barbara Bel Geddes'],
-    country: 'United States',
-    runtime: '128 min',
-    aspectRatio: '1.85:1',
-    filmStock: '35mm VistaVision Horizontal 8-Perf Technicolor',
-    primaryTag: 'Invention of the Dolly-Zoom & #1 Sight & Sound Film (2012)',
-    posterUrl: '/posters/vertigo-1958.jpg',
-    logline:
-      'Hired to trail a mysterious blonde haunted by the dead across San Francisco, a retired detective spirals into a dreamlike obsession of doubles, ghosts, and emerald neon.',
-    historicalEssay: [
-      'Dismissed by critics upon release in 1958, Alfred Hitchcock’s deeply personal meditation on romantic obsession, necrophilia, and the director’s own desire to mold an actress rose over fifty years to unseat Citizen Kane in 2012 as Sight & Sound’s #1 Greatest Film of All Time.',
-      'To visually convey Scottie’s acrophobia looking down the Mission San Juan Bautista bell tower, second-unit cameraman Irmin Roberts built a miniature stairwell and simultaneously tracked the camera backward while zooming the lens forward—inventing the "Vertigo Effect" (dolly zoom).',
-    ],
-    technicalBreakthrough: {
-      headline: 'Invention of the Contra-Zoom (Dolly Zoom) & Saul Bass Lissajous Titles',
-      detail:
-        'Combined a physical camera dolly-out with an optical zoom-in to stretch perspective in real time, paired with Saul Bass and John Whitney’s mechanical-computer title spirals.',
-    },
-    iconicScene: {
-      title: 'Judy Steps Out of the Emerald Neon Bathroom as Madeleine',
-      description:
-        'Bathed in green neon light from the Empire Hotel sign outside, Kim Novak emerges from the dressing room transformed back into a ghost as Bernard Herrmann’s Wagnerian score swells.',
-    },
-    famousQuote: {
-      text: 'Only one is a wanderer; two together are always going somewhere.',
-      attribution: 'Madeleine Elster (Kim Novak)',
-    },
-    accolades: '#1 Greatest Film of All Time (2012 Sight & Sound Decennial Critics Poll)',
-    influencedBy: ['citizen-kane-1941', 'rear-window-1954'],
-    pavedWayFor: ['psycho-1960', 'mulholland-drive-2001', 'in-the-mood-for-love-2000'],
-    colorPalette: ['#10B981', '#EF4444', '#064E3B'],
-    artSceneKey: 'vertigo',
-  },
-  {
     id: 'eight-and-a-half-1963',
     year: 1963,
     smpteCode: '00:19:63:02',
@@ -262,50 +175,6 @@ export const MILESTONES_ADDITIONAL: CinemaMilestone[] = [
     pavedWayFor: ['persona-1966', 'synecdoche-2008'],
     colorPalette: ['#F9FAFB', '#9CA3AF', '#111827'],
     artSceneKey: 'eight-and-a-half',
-  },
-  {
-    id: 'good-bad-ugly-1966',
-    year: 1966,
-    smpteCode: '00:19:66:09',
-    frameCode: '17D',
-    eraId: 'postwar-new-waves',
-    category: 'masterpiece',
-    title: 'The Good, the Bad and the Ugly',
-    originalTitle: 'Il buono, il brutto, il cattivo',
-    director: 'Sergio Leone',
-    cinematographer: 'Tonino Delli Colli',
-    starring: ['Clint Eastwood (Blondie)', 'Eli Wallach (Tuco)', 'Lee Van Cleef (Angel Eyes)'],
-    country: 'Italy / Spain',
-    runtime: '178 min',
-    aspectRatio: '2.39:1',
-    filmStock: '35mm Techniscope 2-Perf Widescreen Technicolor',
-    primaryTag: 'Operatic Spaghetti Western Montage & Ennio Morricone’s Ecstasy of Gold',
-    posterUrl: '/posters/good-bad-ugly-1966.jpg',
-    logline:
-      'Three ruthless gunmen race across Civil War battlefields toward a circular stone cemetery where $200,000 in stolen Confederate gold is buried inside an unmarked grave.',
-    historicalEssay: [
-      'Shot in Spain’s Tabernas Desert using low-cost 2-perf Techniscope widescreen, Sergio Leone reinvented the American Western as grand Italian opera. Leone had Ennio Morricone compose the score before filming began and played the music over loudspeakers on set to pace his camera movements.',
-      'Alternating between sweeping widescreen vistas of thousands of soldiers and extreme macro close-ups showing only a gunman’s squinting eyes and beads of sweat, Leone’s climax at Sad Hill Cemetery remains one of the greatest feats of rhythmic editing in film history.',
-    ],
-    technicalBreakthrough: {
-      headline: '2-Perf Techniscope Deep Focus & Musical Pre-Scoring Montage',
-      detail:
-        'Used 2-perforation pull-down spherical lenses to keep both foreground holsters and distant horizons in razor-sharp focus across a 2.35:1 frame.',
-    },
-    iconicScene: {
-      title: '“The Ecstasy of Gold” & The Three-Way Mexican Standoff at Sad Hill',
-      description:
-        'Tuco sprints in frantic circles blur-panning past thousands of graves to Edda Dell’Orso’s soaring soprano before the five-minute rapid-cut three-way duel.',
-    },
-    famousQuote: {
-      text: 'You see, in this world there’s two kinds of people, my friend: those with loaded guns and those who dig. You dig.',
-      attribution: 'Blondie (Clint Eastwood)',
-    },
-    accolades: 'Quentin Tarantino’s #1 Greatest Film of All Time; Time Magazine Top 100 Films',
-    influencedBy: ['seven-samurai-1954'],
-    pavedWayFor: ['once-upon-a-time-in-the-west-1968', 'pulp-fiction-1994', 'no-country-for-old-men-2007'],
-    colorPalette: ['#D97706', '#FDE68A', '#292524'],
-    artSceneKey: 'good-bad-ugly',
   },
   {
     id: 'playtime-1967',
@@ -392,51 +261,6 @@ export const MILESTONES_ADDITIONAL: CinemaMilestone[] = [
     pavedWayFor: ['taxi-driver-1976', 'pulp-fiction-1994'],
     colorPalette: ['#F97316', '#FFFFFF', '#111827'],
     artSceneKey: 'clockwork-orange',
-  },
-  {
-    id: 'aguirre-wrath-of-god-1972',
-    year: 1972,
-    smpteCode: '00:19:72:11',
-    frameCode: '18D',
-    eraId: 'new-hollywood-blockbuster',
-    category: 'underground',
-    isUndergroundGem: true,
-    title: 'Aguirre, the Wrath of God',
-    originalTitle: 'Aguirre, der Zorn Gottes',
-    director: 'Werner Herzog',
-    cinematographer: 'Thomas Mauch',
-    starring: ['Klaus Kinski (Lope de Aguirre)', 'Helena Rojo', 'Ruy Guerra'],
-    country: 'West Germany',
-    runtime: '95 min',
-    aspectRatio: '1.37:1',
-    filmStock: '35mm Eastmancolor Shot with a Stolen Munich Film School Camera',
-    primaryTag: 'New German Cinema, Amazonian Delirium & Popol Vuh Krautrock',
-    posterUrl: '/posters/aguirre-wrath-of-god-1972.jpg',
-    logline:
-      'Descending from the mist-shrouded peaks of Machu Picchu into the flooded Peruvian Amazon on wooden rafts, megalomaniacal conquistador Lope de Aguirre declares war on nature and God.',
-    historicalEssay: [
-      'Shot over five grueling weeks in the Peruvian rainforest using a 35mm camera that Werner Herzog personally stole from the Munich Film School archive, Aguirre pushed cast and crew to the brink of madness. When volatile star Klaus Kinski threatened to walk off the jungle set, Herzog famously warned he would shoot Kinski eight times and save the ninth bullet for himself.',
-      'Scored by German ambient-electronic collective Popol Vuh using a mystical "choir-organ" Mellotron, the film directly inspired Francis Ford Coppola’s Apocalypse Now.',
-    ],
-    technicalBreakthrough: {
-      headline: '360-Degree Circular Raft Camera Rig & Acrylic Rain-Drop Lens Hoods',
-      detail:
-        'Cinematographer Thomas Mauch encircled Klaus Kinski on a spinning wooden raft surrounded by 400 squirrel monkeys in a single dizzying 360-degree tracking shot.',
-    },
-    iconicScene: {
-      title: 'The Final 360-Degree Orbit Around Aguirre’s Monkey-Overrun Raft',
-      description:
-        'Alone among corpses and hundreds of chittering monkeys on a drifting raft, Kinski raves of founding a pure dynasty as the camera circles him like a vulture.',
-    },
-    famousQuote: {
-      text: 'I am the Wrath of God! The earth I pass will see me and tremble!',
-      attribution: 'Lope de Aguirre (Klaus Kinski)',
-    },
-    accolades: 'Time Magazine All-Time 100 Movies; Direct Inspiration for Apocalypse Now',
-    influencedBy: ['seven-samurai-1954'],
-    pavedWayFor: ['apocalypse-now-1979', 'there-will-be-blood-2007'],
-    colorPalette: ['#15803D', '#D97706', '#052E16'],
-    artSceneKey: 'aguirre',
   },
   {
     id: 'chinatown-1974',

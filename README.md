@@ -6,7 +6,7 @@
 
 ## ✨ Key Exhibition Features
 
-1. **90 Landmark Films Across 7 Historical Eras (1878–2024)**
+1. **86 Landmark Films Across 7 Historical Eras (1878–2024)**
    - **35mm Celluloid Ribbon View**: Horizontal perforated film-strip track with real theatrical movie posters.
    - **3D Spatial Z-Tunnel**: Interactive mouse-parallax and wheel-driven 3D depth corridor.
    - **Poster Vault Grid**: Full-bleed responsive widescreen poster gallery (`1` to `6` columns).

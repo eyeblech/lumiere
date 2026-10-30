@@ -9,6 +9,9 @@ import { REAL_POSTER_URLS } from './posterUrls';
 import { LUMINARIES } from './luminariesData';
 import { CinemaMilestone, Era, EraId } from './types';
 
+const seenIds = new Set<string>();
+const seenTitles = new Set<string>();
+
 export const MILESTONES: CinemaMilestone[] = [
   ...MILESTONES_PART_1,
   ...MILESTONES_PART_2,
@@ -16,6 +19,15 @@ export const MILESTONES: CinemaMilestone[] = [
   ...MILESTONES_CANNES_AND_MOVEMENTS,
   ...MILESTONES_ADDITIONAL,
 ]
+  .filter((m) => {
+    const normTitle = m.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (seenIds.has(m.id) || seenTitles.has(normTitle)) {
+      return false;
+    }
+    seenIds.add(m.id);
+    seenTitles.add(normTitle);
+    return true;
+  })
   .map((m) => ({
     ...m,
     posterUrl: m.posterUrl || REAL_POSTER_URLS[m.id],
